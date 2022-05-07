@@ -24,7 +24,7 @@ import static com.github.chhsiao90.nitmproxy.tls.CertUtil.*;
 public class NitmProxy {
     private static final Logger LOGGER = LoggerFactory.getLogger(NitmProxy.class);
 
-    private NitmProxyConfig config;
+    private final NitmProxyConfig config;
 
     private NioEventLoopGroup bossGroup;
     private NioEventLoopGroup workerGroup;
