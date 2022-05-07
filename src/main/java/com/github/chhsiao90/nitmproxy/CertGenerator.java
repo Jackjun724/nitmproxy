@@ -1,18 +1,10 @@
 package com.github.chhsiao90.nitmproxy;
 
 import com.github.chhsiao90.nitmproxy.tls.CertUtil;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -26,34 +18,8 @@ public final class CertGenerator {
     }
 
     public static void main(String[] args) throws Exception {
-        CommandLineParser parser = new DefaultParser();
 
-        Options options = new Options();
-
-        options.addOption(
-                Option.builder("s")
-                      .longOpt("subject")
-                      .hasArg()
-                      .argName("SUBJECT")
-                      .desc("subject of certificate, default: " + DEFAULT_SUBJECT)
-                      .build());
-        options.addOption(
-                Option.builder("k")
-                        .longOpt("keysize")
-                        .hasArg()
-                        .argName("KEYSIZE")
-                        .desc("key size of certificate, default: 2048")
-                        .build());
-
-        CommandLine commandLine = null;
-        try {
-            commandLine = parser.parse(options, args);
-        } catch (ParseException e) {
-            new HelpFormatter().printHelp("certgenerator", options, true);
-            System.exit(-1);
-        }
-
-        CertGeneratorConfig config = parse(commandLine);
+        CertGeneratorConfig config = new CertGeneratorConfig();
         LOGGER.info("Generating certificate with subject:{} and keysize:{}",
                 config.getSubject(), config.getKeySize());
 
@@ -64,21 +30,6 @@ public final class CertGenerator {
 
         //we'll copy server.pem to server.crt for easy import
         Files.copy(Paths.get(serverPem.toURI()), Paths.get("server.crt"));
-    }
-
-    private static CertGeneratorConfig parse(CommandLine commandLine) {
-        CertGeneratorConfig config = new CertGeneratorConfig();
-        if (commandLine.hasOption("s")) {
-            config.setSubject(commandLine.getOptionValue("s"));
-        }
-        if (commandLine.hasOption("k")) {
-            try {
-                config.setKeySize(Integer.parseInt(commandLine.getOptionValue("k")));
-            } catch (NumberFormatException e) {
-                throw new IllegalArgumentException("Not a valid key size: " + commandLine.getOptionValue("k"));
-            }
-        }
-        return config;
     }
 
     private static class CertGeneratorConfig {

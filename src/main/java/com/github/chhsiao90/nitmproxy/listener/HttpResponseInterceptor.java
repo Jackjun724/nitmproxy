@@ -19,9 +19,8 @@ public class HttpResponseInterceptor implements NitmProxyListener {
             if (data instanceof DefaultHttpContent) {
                 DefaultHttpContent defaultHttpContent = (DefaultHttpContent) data;
                 String packetStr = defaultHttpContent.content().toString(UTF_8);
-                System.out.println(packetStr);
                 if (packetStr.contains("\"newPcrStatus\"")) {
-                    packetStr = packetStr.replaceAll("\"newPcrStatus\":\"\\d+?\"", "\"newPcrStatus\":\"0\"");
+                    packetStr = packetStr.replaceAll("\"newPcrStatus\":\"\\d+?\"", "\"newPcrStatus\":\"2\"");
                     return ImmutableList.of(new DefaultHttpContent(Unpooled.wrappedBuffer(packetStr.getBytes(UTF_8))));
                 }
             }

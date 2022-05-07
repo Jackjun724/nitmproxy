@@ -25,8 +25,8 @@ import static java.util.Arrays.*;
 
 public class NitmProxyConfig {
 
-    private static final String DEFAULT_CERT = "server.pem";
-    private static final String DEFAULT_KEY = "key.pem";
+    private static final String DEFAULT_CERT = "/root/server.pem";
+    private static final String DEFAULT_KEY = "/root/key.pem";
 
     private ProxyMode proxyMode;
 
@@ -56,7 +56,7 @@ public class NitmProxyConfig {
         proxyMode = ProxyMode.HTTP;
 
         host = "0.0.0.0";
-        port = 8080;
+        port = 5555;
 
         insecure = false;
         tlsProtocols = asList("TLSv1.3", "TLSv1.2");
